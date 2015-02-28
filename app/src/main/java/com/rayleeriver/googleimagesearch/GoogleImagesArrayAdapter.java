@@ -1,6 +1,7 @@
 package com.rayleeriver.googleimagesearch;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +33,10 @@ public class GoogleImagesArrayAdapter extends ArrayAdapter<GoogleImage> {
 
         ivImage.setImageResource(0);
 
-        GoogleImage googleImage = getItem(position);
+        final GoogleImage googleImage = getItem(position);
         tvTitle.setText(Html.fromHtml(googleImage.title));
 
-        Picasso.with(getContext()).load(googleImage.tbUrl).into(ivImage);
-
+        Picasso.with(getContext()).load(googleImage.tbUrl).fit().centerCrop().into(ivImage);
         return convertView;
     }
 }

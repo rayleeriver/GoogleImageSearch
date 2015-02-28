@@ -4,26 +4,40 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by ray on 2/25/15.
  */
-public class GoogleImage {
+public class GoogleImage implements Serializable {
     public String title;
-    public String tbUrl;
 
-    public GoogleImage(String title, String url) {
+    public String tbUrl;
+    public String url;
+
+//    "width": "4288",
+//            "height": "2848",
+//            "imageId": "ANd9GcT1gNv9kRclytVPib80clNEqUxeoWL4XAQq3id8xdac71z8Gr2uCcuIaytR",
+//            "tbWidth": "150",
+//            "tbHeight": "100",
+//            "unescapedUrl": "http://animalia-life.com/data_images/cat/cat6.jpg",
+//            "url": "http://animalia-life.com/data_images/cat/cat6.jpg",
+
+
+    public GoogleImage(String title, String tbUrl, String url) {
         this.title = title;
-        this.tbUrl = url;
+        this.tbUrl = tbUrl;
+        this.url = url;
     }
 
     public static GoogleImage fromJsonObject(JSONObject jsonObject) throws JSONException {
         if (jsonObject != null) {
             String title = jsonObject.getString("title");
             String tbUrl = jsonObject.getString("tbUrl");
-            GoogleImage googleImage = new GoogleImage(title, tbUrl);
+            String url = jsonObject.getString("url");
+            GoogleImage googleImage = new GoogleImage(title, tbUrl, url);
             return googleImage;
         }
         return null;
@@ -39,7 +53,6 @@ public class GoogleImage {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
 
             return googleImages;
