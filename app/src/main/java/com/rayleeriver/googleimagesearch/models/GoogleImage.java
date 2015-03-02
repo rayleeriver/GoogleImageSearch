@@ -1,4 +1,7 @@
-package com.rayleeriver.googleimagesearch;
+package com.rayleeriver.googleimagesearch.models;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,19 +14,10 @@ import java.util.List;
 /**
  * Created by ray on 2/25/15.
  */
-public class GoogleImage implements Serializable {
+public class GoogleImage implements Parcelable {
     public String title;
-
     public String tbUrl;
     public String url;
-
-//    "width": "4288",
-//            "height": "2848",
-//            "imageId": "ANd9GcT1gNv9kRclytVPib80clNEqUxeoWL4XAQq3id8xdac71z8Gr2uCcuIaytR",
-//            "tbWidth": "150",
-//            "tbHeight": "100",
-//            "unescapedUrl": "http://animalia-life.com/data_images/cat/cat6.jpg",
-//            "url": "http://animalia-life.com/data_images/cat/cat6.jpg",
 
 
     public GoogleImage(String title, String tbUrl, String url) {
@@ -59,4 +53,35 @@ public class GoogleImage implements Serializable {
         }
         return null;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(tbUrl);
+        dest.writeString(url);
+    }
+
+    private GoogleImage(Parcel in) {
+        title = in.readString();
+        tbUrl = in.readString();
+        url = in.readString();
+    }
+
+    public static final Creator<GoogleImage> CREATOR = new Creator<GoogleImage>() {
+
+        @Override
+        public GoogleImage createFromParcel(Parcel source) {
+            return new GoogleImage(source);
+        }
+
+        @Override
+        public GoogleImage[] newArray(int size) {
+            return new GoogleImage[size];
+        }
+    };
 }

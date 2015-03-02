@@ -1,16 +1,18 @@
-package com.rayleeriver.googleimagesearch;
+package com.rayleeriver.googleimagesearch.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.rayleeriver.googleimagesearch.R;
+import com.rayleeriver.googleimagesearch.models.GoogleImage;
 
 import java.util.List;
 
@@ -36,7 +38,11 @@ public class GoogleImagesArrayAdapter extends ArrayAdapter<GoogleImage> {
         final GoogleImage googleImage = getItem(position);
         tvTitle.setText(Html.fromHtml(googleImage.title));
 
-        Picasso.with(getContext()).load(googleImage.tbUrl).fit().centerCrop().into(ivImage);
+//        Picasso.with(getContext()).load(googleImage.tbUrl).fit().centerCffffrop().into (ivImage);
+        ImageLoader.getInstance().displayImage(googleImage.tbUrl, ivImage);
+
         return convertView;
     }
+
+
 }

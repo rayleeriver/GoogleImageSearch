@@ -1,4 +1,4 @@
-package com.rayleeriver.googleimagesearch;
+package com.rayleeriver.googleimagesearch.listeners;
 
 import android.widget.AbsListView;
 
@@ -43,7 +43,7 @@ public abstract class EndlessScrollListener implements AbsListView.OnScrollListe
         }
 
         if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-            onLoadMore(currentPage + 1 , totalItemCount);
+            onLoadMore(currentPage, totalItemCount);
             loading = true;
         }
     }

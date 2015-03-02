@@ -9,21 +9,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-import com.rayleeriver.googleimagesearch.EndlessScrollListener;
-import com.rayleeriver.googleimagesearch.GoogleImage;
-import com.rayleeriver.googleimagesearch.GoogleImagesArrayAdapter;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.rayleeriver.googleimagesearch.NutraBaseImageDecoder;
+import com.rayleeriver.googleimagesearch.listeners.EndlessScrollListener;
+import com.rayleeriver.googleimagesearch.models.GoogleImage;
+import com.rayleeriver.googleimagesearch.adapters.GoogleImagesArrayAdapter;
 import com.rayleeriver.googleimagesearch.R;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
+import com.rayleeriver.googleimagesearch.delegates.GoogleImageApiDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +30,24 @@ public class MainActivity extends ActionBarActivity {
 
     public static final String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images";
     public static AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+    private GoogleImageApiDelegate googleImageApiDelegate = null;
 
     GridView gvImages;
     List<GoogleImage> googleImages;
+
+    public GoogleImagesArrayAdapter getaGoogleImages() {
+        return aGoogleImages;
+    }
+
     GoogleImagesArrayAdapter aGoogleImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).imageDecoder(new NutraBaseImageDecoder(false)).build();
+        ImageLoader.getInstance().init(config);
+        googleImageApiDelegate = new GoogleImageApiDelegate(this, aGoogleImages);
         setupViews();
     }
 
@@ -54,14 +60,13 @@ public class MainActivity extends ActionBarActivity {
         gvImages.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemCount) {
-
+                googleImageApiDelegate.fetchImagesForQueryFromIndex(null, page);
             }
         });
 
         gvImages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 Intent intent = new Intent(MainActivity.this, FullScreenImageActivity.class);
                 intent.putExtra("googleImage", aGoogleImages.getItem(position));
                 startActivity(intent);
@@ -69,13 +74,8 @@ public class MainActivity extends ActionBarActivity {
 
         });
 
-        // setup toolbar
         Toolbar toobar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toobar);
-
-//        Button btnSearch = (Button) findViewById(R.id.btnSearch);
-//        btnSearch.setOnClickListener(new GoogleImagesSearchOnClickListener(this));
-
     }
 
     @Override
@@ -83,44 +83,7 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         SearchView svSearch = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-
-                RequestParams params = new RequestParams();
-                params.put("v", "1.0");
-                params.put("q", s);
-                params.put("rsz", "8");
-
-                MainActivity.asyncHttpClient.get(MainActivity.searchUrl, params, new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        if (statusCode == 200) {
-                            JSONObject responseData = response.optJSONObject("responseData");
-                            if (response != null) {
-                                aGoogleImages.clear();
-                                aGoogleImages.addAll(GoogleImage.fromJsonArray(responseData.optJSONArray("results")));
-                                aGoogleImages.notifyDataSetChanged();
-                            }
-                        }
-
-                        Intent i = new Intent();
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        super.onFailure(statusCode, headers, throwable, errorResponse);
-                    }
-                });
-
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+        svSearch.setOnQueryTextListener(new MyOnQueryTextListener());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -137,6 +100,19 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private class MyOnQueryTextListener implements SearchView.OnQueryTextListener {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            googleImageApiDelegate.fetchImagesForQueryFromIndex(query, 0);
+            return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String s) {
+            return false;
+        }
     }
 
 }

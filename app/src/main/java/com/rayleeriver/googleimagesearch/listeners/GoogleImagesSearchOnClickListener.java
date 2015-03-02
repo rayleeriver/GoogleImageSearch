@@ -1,16 +1,8 @@
-package com.rayleeriver.googleimagesearch.activities;
+package com.rayleeriver.googleimagesearch.listeners;
 
-import android.content.Intent;
 import android.view.View;
-import android.widget.EditText;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-import com.rayleeriver.googleimagesearch.GoogleImage;
-import com.rayleeriver.googleimagesearch.R;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
+import com.rayleeriver.googleimagesearch.activities.MainActivity;
 
 /**
 * Created by ray on 2/26/15.
