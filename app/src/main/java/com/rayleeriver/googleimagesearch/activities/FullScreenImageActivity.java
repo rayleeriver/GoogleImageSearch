@@ -32,7 +32,6 @@ public class FullScreenImageActivity extends Activity {
         ImageLoader.getInstance().displayImage(googleImage.url, fullImage, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
-
             }
 
             @Override
@@ -42,34 +41,12 @@ public class FullScreenImageActivity extends Activity {
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-
             }
 
             @Override
             public void onLoadingCancelled(String imageUri, View view) {
-
             }
         });
 
-
-//        Picasso.with(this).load(googleImage.url).into(fullImage, new ImageLoaderCallback(pbFullImage));
     }
-
-//    private class ImageLoaderCallback implements Callback {
-//        ProgressBar pbFullImage;
-//
-//        public ImageLoaderCallback(ProgressBar pbFullImage) {
-//            this.pbFullImage = pbFullImage;
-//        }
-//
-//        @Override
-//        public void onSuccess() {
-//            pbFullImage.setVisibility(View.GONE);
-//        }
-//
-//        @Override
-//        public void onError() {
-//            Log.e("debug", "failed load image");
-//        }
-//    }
 }

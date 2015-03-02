@@ -6,6 +6,7 @@
     <string name="action_search">Search...</string>
 
     <string-array name="sizesArray">
+        <item>any</item>
         <item>small</item>
         <item>medium</item>
         <item>large</item>
@@ -15,6 +16,7 @@
     </string-array>
 
     <string-array name="colorsArray">
+        <item>any</item>
         <item>black</item>
         <item>blue</item>
         <item>brown</item>
@@ -30,6 +32,7 @@
     </string-array>
 
     <string-array name="typesArray">
+        <item>any</item>
         <item>face</item>
         <item>photo</item>
         <item>clipart</item>

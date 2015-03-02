@@ -3,19 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
-    <ImageView
+    <com.etsy.android.grid.util.DynamicHeightImageView
         android:id="@+id/ivImage"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:adjustViewBounds="true"
+        android:layout_height="wrap_content"
         android:contentDescription="Image Result"
-        android:layout_gravity="center"
+        android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         />
 
-    <TextView
+    <com.etsy.android.grid.util.DynamicHeightTextView
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

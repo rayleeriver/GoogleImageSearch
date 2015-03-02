@@ -38,7 +38,6 @@ public class GoogleImagesArrayAdapter extends ArrayAdapter<GoogleImage> {
         final GoogleImage googleImage = getItem(position);
         tvTitle.setText(Html.fromHtml(googleImage.title));
 
-//        Picasso.with(getContext()).load(googleImage.tbUrl).fit().centerCffffrop().into (ivImage);
         ImageLoader.getInstance().displayImage(googleImage.tbUrl, ivImage);
 
         return convertView;
