@@ -1,6 +1,7 @@
 package com.rayleeriver.googleimagesearch.activities;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.rayleeriver.googleimagesearch.NutraBaseImageDecoder;
+import com.rayleeriver.googleimagesearch.fragments.FiltersDialog;
 import com.rayleeriver.googleimagesearch.listeners.EndlessScrollListener;
 import com.rayleeriver.googleimagesearch.models.GoogleImage;
 import com.rayleeriver.googleimagesearch.adapters.GoogleImagesArrayAdapter;
@@ -23,7 +25,9 @@ import com.rayleeriver.googleimagesearch.R;
 import com.rayleeriver.googleimagesearch.delegates.GoogleImageApiDelegate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -31,6 +35,8 @@ public class MainActivity extends ActionBarActivity {
     public static final String searchUrl = "https://ajax.googleapis.com/ajax/services/search/images";
     public static AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
     private GoogleImageApiDelegate googleImageApiDelegate = null;
+
+    private Map<String, String> filtersMap = new HashMap<String, String> ();
 
     GridView gvImages;
     List<GoogleImage> googleImages;
@@ -60,7 +66,7 @@ public class MainActivity extends ActionBarActivity {
         gvImages.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemCount) {
-                googleImageApiDelegate.fetchImagesForQueryFromIndex(null, page);
+                googleImageApiDelegate.fetchImagesForQueryFromIndex(null, page, filtersMap);
             }
         });
 
@@ -96,6 +102,9 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FiltersDialog filtersDialog = FiltersDialog.newInstance("Filters");
+            filtersDialog.show(fragmentManager, "fragment_filter_dialog");
             return true;
         }
 
@@ -105,7 +114,7 @@ public class MainActivity extends ActionBarActivity {
     private class MyOnQueryTextListener implements SearchView.OnQueryTextListener {
         @Override
         public boolean onQueryTextSubmit(String query) {
-            googleImageApiDelegate.fetchImagesForQueryFromIndex(query, 0);
+            googleImageApiDelegate.fetchImagesForQueryFromIndex(query, 0, filtersMap);
             return true;
         }
 
@@ -114,5 +123,14 @@ public class MainActivity extends ActionBarActivity {
             return false;
         }
     }
+
+    public Map<String, String> getFiltersMap() {
+        return filtersMap;
+    }
+
+    public void setFiltersMap(Map<String, String> filtersMap) {
+        this.filtersMap = filtersMap;
+    }
+
 
 }

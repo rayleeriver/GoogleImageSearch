@@ -11,6 +11,8 @@ import com.rayleeriver.googleimagesearch.activities.MainActivity;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 public class GoogleImageApiDelegate {
     private final MainActivity mainActivity;
     private GoogleImagesArrayAdapter googleImagesArrayAdapter;
@@ -22,7 +24,7 @@ public class GoogleImageApiDelegate {
         this.googleImagesArrayAdapter = adapter;
     }
 
-    public void fetchImagesForQueryFromIndex(String query, int start) {
+    public void fetchImagesForQueryFromIndex(String query, int start, Map<String, String> filtersMap) {
         synchronized (GoogleImageApiDelegate.class) {
             if (!processingImages) {
                 processingImages = true;
@@ -37,6 +39,15 @@ public class GoogleImageApiDelegate {
                 params.put("q", this.query);
                 params.put("rsz", "8");
                 params.put("start", String.valueOf(start * 8));
+
+                if (filtersMap != null && filtersMap.size() > 0) {
+                    for (String key: filtersMap.keySet()) {
+                        String value = filtersMap.get(key);
+                        if (value != null) {
+                            params.put(key, value);
+                        }
+                    }
+                }
 
                 MainActivity.asyncHttpClient.get(MainActivity.searchUrl, params, new JsonHttpResponseHandler() {
                     @Override
