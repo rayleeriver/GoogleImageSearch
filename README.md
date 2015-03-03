@@ -29,3 +29,5 @@ Completed optional user stories:
 
 NOTE:  With Picasso 2.5.0, there is an outstanding problem with JPEG image markers for 
 some JPEG files.  I've switched to use Universal Image Loader because Picasso doesn't provide any info via onError().
+
+Licecap <a href="https://github.com/rayleeriver/GoogleImageSearch/blob/master/submission_w2.gif">submission</a>
