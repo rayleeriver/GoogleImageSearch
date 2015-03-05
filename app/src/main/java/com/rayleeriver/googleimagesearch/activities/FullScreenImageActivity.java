@@ -25,7 +25,7 @@ public class FullScreenImageActivity extends Activity {
         setContentView(R.layout.fullscreen_image);
         GoogleImage googleImage = (GoogleImage) getIntent().getParcelableExtra("googleImage");
 
-        final ProgressBar pbFullImage = (ProgressBar) findViewById(R.id.pbFullImage);
+//        final ProgressBar pbFullImage = (ProgressBar) findViewById(R.id.pbFullImage);
 //        pbFullImage.setVisibility(View.VISIBLE);
 
         TouchImageView fullImage = (TouchImageView) findViewById(R.id.ivFullImage);
@@ -42,11 +42,12 @@ public class FullScreenImageActivity extends Activity {
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//                pbFullImage.setVisibility(View.INVISIBLE);
+//                pbFullImage.setVisibility(View.GONE);
             }
 
             @Override
             public void onLoadingCancelled(String imageUri, View view) {
+//                                pbFullImage.setVisibility(View.GONE);
             }
         });
 
