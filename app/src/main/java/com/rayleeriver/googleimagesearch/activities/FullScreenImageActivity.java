@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.rayleeriver.googleimagesearch.TouchImageView;
 import com.rayleeriver.googleimagesearch.models.GoogleImage;
 import com.rayleeriver.googleimagesearch.R;
 
@@ -24,10 +25,10 @@ public class FullScreenImageActivity extends Activity {
         setContentView(R.layout.fullscreen_image);
         GoogleImage googleImage = (GoogleImage) getIntent().getParcelableExtra("googleImage");
 
-        ProgressBar pbFullImage = (ProgressBar) findViewById(R.id.pbFullImage);
-        pbFullImage.setVisibility(View.VISIBLE);
+        final ProgressBar pbFullImage = (ProgressBar) findViewById(R.id.pbFullImage);
+//        pbFullImage.setVisibility(View.VISIBLE);
 
-        ImageView fullImage = (ImageView) findViewById(R.id.ivFullImage);
+        TouchImageView fullImage = (TouchImageView) findViewById(R.id.ivFullImage);
 
         ImageLoader.getInstance().displayImage(googleImage.url, fullImage, new ImageLoadingListener() {
             @Override
@@ -41,6 +42,7 @@ public class FullScreenImageActivity extends Activity {
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                pbFullImage.setVisibility(View.INVISIBLE);
             }
 
             @Override
